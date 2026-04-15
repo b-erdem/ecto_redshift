@@ -5,12 +5,12 @@ defmodule EctoRedshiftTest do
     assert EctoRedshift.adapter_module() == Ecto.Adapters.Redshift
   end
 
-  test "features/0 returns a non-empty list of strings" do
-    features = EctoRedshift.features()
+  test "features/0 mentions the load-bearing Redshift surface" do
+    joined = EctoRedshift.features() |> Enum.join("\n")
 
-    assert is_list(features)
-    assert features != []
-    assert Enum.all?(features, &is_binary/1)
+    assert joined =~ ~r/Postgrex/i
+    assert joined =~ ~r/DISTSTYLE|DISTKEY|SORTKEY/
+    assert joined =~ ~r/binary_id/
   end
 
   test "unsupported_features/0 documents RETURNING and on_conflict" do
